@@ -49,6 +49,21 @@ PROVIDERS = (
         "https://www.bing.com/search?q={query}",
         "generic",
     ),
+    SearchProvider(
+        "Brave Search",
+        "https://search.brave.com/search?q={query}",
+        "generic",
+    ),
+    SearchProvider(
+        "Yahoo Search",
+        "https://search.yahoo.com/search?p={query}",
+        "generic",
+    ),
+    SearchProvider(
+        "Google Search",
+        "https://www.google.com/search?q={query}",
+        "generic",
+    ),
 )
 
 
