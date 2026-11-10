@@ -1,9 +1,17 @@
 import os
 from datetime import datetime, timezone
-from flask import Flask, jsonify, render_template, request
+from urllib.parse import urlencode
+from flask import Flask, jsonify, redirect, render_template, request, abort
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "change-this-in-production")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", os.urandom(32))
+
+SEARCH_ENGINES = {
+    "google": "https://www.google.com/search",
+    "bing": "https://www.bing.com/search",
+    "duckduckgo": "https://duckduckgo.com/",
+    "brave": "https://search.brave.com/search",
+}
 
 @app.get("/")
 def home():
@@ -11,23 +19,21 @@ def home():
 
 @app.get("/health")
 def health():
-    return jsonify(status="ok", app="NEXUS AI", timestamp=datetime.now(timezone.utc).isoformat())
+    return jsonify(status="ok", app="NEXUS BROWSER", timestamp=datetime.now(timezone.utc).isoformat())
 
-@app.post("/api/assistant")
-def assistant():
-    data = request.get_json(silent=True) or {}
-    prompt = str(data.get("prompt", "")).strip()
-    if not prompt:
-        return jsonify(error="Digite uma solicitação."), 400
-    # A provider API is intentionally not called until the owner configures a key.
-    return jsonify(
-        message="O NEXUS AI está pronto para receber um provedor de IA. Configure GEMINI_API_KEY no ambiente do Render para ativar respostas reais.",
-        configured=False
-    ), 200
+@app.get("/search")
+def search():
+    query = request.args.get("q", "").strip()
+    engine = request.args.get("engine", "google").lower()
+    if not query or len(query) > 500:
+        abort(400, description="Digite uma pesquisa válida.")
+    if engine not in SEARCH_ENGINES:
+        engine = "google"
+    return redirect(SEARCH_ENGINES[engine] + "?" + urlencode({"q": query}), code=302)
 
 @app.get("/api/config")
 def config():
-    return jsonify(ai_configured=bool(os.environ.get("GEMINI_API_KEY")))
+    return jsonify(app="NEXUS BROWSER", search_engines=list(SEARCH_ENGINES.keys()), browser_engine="engine do navegador do dispositivo")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")))
