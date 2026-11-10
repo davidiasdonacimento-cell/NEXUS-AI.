@@ -219,6 +219,8 @@ renderCurrent();
 persistTabs()}
 function closeTab(id){const i=state.tabs.findIndex(t=>t.id===id);
 if(i<0)return;
+const closing=state.tabs[i];
+window.dispatchEvent(new CustomEvent("nexus:tabclosing",{detail:{id:closing.id,title:closing.title,url:closing.url,private:closing.private}}));
 const was=state.activeId===id;
 state.tabs.splice(i,1);
 if(!state.tabs.length)state.tabs.push(tab());
