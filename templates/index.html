@@ -165,6 +165,7 @@
     <button data-action="clear-data">⌫ <span>Limpar dados locais</span></button>
     <button data-action="backup">▣ <span>Backup e restauração</span></button>
     <button data-action="commands">⌘ <span>Comandos rápidos</span></button>
+    <button data-action="reopen-tab">↶ <span>Reabrir aba fechada</span></button>
     <div class="menu-divider"></div>
     <div class="menu-shortcuts">Atalhos: Ctrl+T nova aba · Ctrl+W fechar</div>
   </div>
@@ -189,5 +190,6 @@
   <script src="{{ url_for('static', filename='command-palette.js') }}" defer></script>
   <script src="{{ url_for('static', filename='accessibility.js') }}" defer></script>
   <script src="{{ url_for('static', filename='page-actions.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='tab-recovery.js') }}" defer></script>
 </body>
 </html>
