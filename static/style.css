@@ -582,3 +582,98 @@ body[data-theme="midnight"] .brand-mark, body[data-theme="midnight"] .mini-mark 
   .quick-card { font-size: 9px; }
   .bookmark-shortcuts { gap: 7px; }
 }
+
+
+/* Integrated search: failure diagnostics and retry controls */
+.search-diagnostics {
+  width: min(100%, 680px);
+  margin: 22px auto 0;
+  padding: 14px 16px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  text-align: left;
+}
+.search-diagnostics summary {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+.search-diagnostic-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.search-diagnostic-row:last-child {
+  border-bottom: 0;
+}
+.search-diagnostic-row span:last-child {
+  color: var(--muted);
+  text-align: right;
+}
+.search-retry {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 42px;
+  margin: 18px auto 0;
+  padding: 0 20px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  color: white;
+  background: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .16s ease, filter .16s ease, box-shadow .16s ease;
+}
+.search-retry:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 8px 24px rgba(69, 115, 255, .2);
+}
+.search-retry:active {
+  transform: translateY(1px) scale(.985);
+}
+.search-retry:focus-visible,
+.search-diagnostics summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.search-results {
+  width: min(100%, 760px);
+  margin-inline: auto;
+}
+.search-results .empty-state {
+  max-width: 620px;
+  margin: 42px auto 12px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+@media (max-width: 600px) {
+  .search-diagnostics {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .search-diagnostic-row {
+    align-items: flex-start;
+    font-size: 11px;
+  }
+  .search-retry {
+    width: 100%;
+    margin-top: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-retry {
+    transition: none;
+  }
+}
