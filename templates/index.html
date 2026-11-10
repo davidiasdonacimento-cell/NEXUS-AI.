@@ -1,54 +1,187 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#090d18"><meta name="description" content="NEXUS BROWSER — navegue e pesquise na web.">
-  <link rel="manifest" href="/static/manifest.webmanifest"><link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080d18">
+  <meta name="description" content="NEXUS BROWSER — seu espaço pessoal para navegar na internet.">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <title>NEXUS BROWSER</title>
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <a class="brand" href="/" aria-label="NEXUS BROWSER"><span class="logo">N</span><span>NEXUS <b>BROWSER</b><small>EXPLORE WITHOUT LIMITS</small></span></a>
-    <div class="top-actions"><button id="installBtn" class="install hidden">＋ Instalar</button><span class="secure"><i></i> Navegação protegida pelo navegador</span></div>
-  </header>
-  <main>
-    <section class="hero">
-      <div class="orb"><span>N</span></div>
-      <div class="eyebrow">SEU ESPAÇO NA INTERNET</div>
-      <h1>O mundo está a<br><span>um clique.</span></h1>
-      <p>Pesquise na web, abra seus sites favoritos e organize sua navegação.</p>
-      <form id="searchForm" class="searchbox">
-        <span class="search-icon">⌕</span>
-        <input id="address" autocomplete="off" placeholder="Pesquise ou digite um endereço..." aria-label="Pesquisar ou digitar endereço" required>
-        <select id="engine" aria-label="Mecanismo de pesquisa">
-          <option value="google">Google</option><option value="bing">Bing</option><option value="duckduckgo">DuckDuckGo</option><option value="brave">Brave</option>
-        </select>
-        <button type="submit">Pesquisar <span>↗</span></button>
+  <div class="browser" id="browser">
+    <header class="chrome">
+      <div class="tab-strip" id="tabStrip" role="tablist" aria-label="Abas abertas">
+        <button class="tab active" data-tab-id="welcome" role="tab" aria-selected="true">
+          <span class="tab-favicon">N</span><span class="tab-title">Nova guia</span><span class="tab-close" aria-label="Fechar aba">×</span>
+        </button>
+        <button class="add-tab" id="newTab" title="Nova aba (Ctrl+T)" aria-label="Nova aba">＋</button>
+      </div>
+      <div class="window-actions">
+        <button class="icon-button" id="privateToggle" title="Nova aba anônima (Ctrl+Shift+N)" aria-label="Modo anônimo">◉</button>
+        <button class="icon-button" id="menuButton" title="Menu" aria-label="Abrir menu">⋮</button>
+      </div>
+    </header>
+
+    <nav class="toolbar" aria-label="Controles do navegador">
+      <div class="nav-buttons">
+        <button class="round-button" id="back" title="Voltar (Alt+←)" aria-label="Voltar">‹</button>
+        <button class="round-button" id="forward" title="Avançar (Alt+→)" aria-label="Avançar">›</button>
+        <button class="round-button" id="reload" title="Recarregar" aria-label="Recarregar">↻</button>
+        <button class="round-button home-button" id="homeButton" title="Página inicial" aria-label="Página inicial">⌂</button>
+      </div>
+      <form class="omnibox" id="addressForm">
+        <span class="security-icon" id="securityIcon">⌕</span>
+        <input id="address" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+          placeholder="Pesquisar ou digitar endereço" aria-label="Pesquisar ou digitar endereço">
+        <button type="button" id="clearAddress" class="clear-address" aria-label="Limpar endereço">×</button>
+        <button type="submit" class="go-button" aria-label="Ir para endereço">↵</button>
       </form>
-      <div class="engine-note">BUSCA COM <b id="engineLabel">GOOGLE</b> · VOCÊ PODE TROCAR O MECANISMO</div>
-    </section>
-    <section class="workspace">
-      <div class="section-head"><div><span class="eyebrow">ACESSO RÁPIDO</span><h2>Seus destinos</h2></div><button id="addFavorite" class="outline">＋ Adicionar favorito</button></div>
-      <div id="favorites" class="favorites">
-        <button class="site" data-url="https://www.youtube.com"><span class="site-icon red">▶</span><b>YouTube</b><small>Vídeos</small></button>
-        <button class="site" data-url="https://www.wikipedia.org"><span class="site-icon blue">W</span><b>Wikipedia</b><small>Conhecimento</small></button>
-        <button class="site" data-url="https://www.github.com"><span class="site-icon dark">⌘</span><b>GitHub</b><small>Projetos</small></button>
-        <button class="site" data-url="https://www.google.com"><span class="site-icon multicolor">G</span><b>Google</b><small>Pesquisa</small></button>
+      <div class="toolbar-actions">
+        <button class="round-button" id="bookmarkCurrent" title="Adicionar favorito" aria-label="Adicionar favorito">☆</button>
+        <button class="round-button" id="downloadsButton" title="Downloads" aria-label="Downloads">↓</button>
+        <button class="round-button" id="historyButton" title="Histórico" aria-label="Histórico">◷</button>
       </div>
-      <div class="browser-panel">
-        <div class="panel-head"><div><span class="eyebrow">NAVEGADOR</span><h2>Área de navegação</h2></div><div class="nav-controls"><button id="back" title="Voltar">←</button><button id="forward" title="Avançar">→</button><button id="reload" title="Recarregar">↻</button><button id="openExternal" class="external">Abrir fora ↗</button></div></div>
-        <div class="tabs" id="tabs"><button class="tab active" data-tab="0">◉ Nova guia <span>×</span></button><button id="newTab" class="new-tab" title="Nova guia">＋</button></div>
-        <div class="viewbar"><span class="lock">⌑</span><input id="pageAddress" placeholder="Digite um endereço para abrir nesta área"><button id="goPage">Ir ↗</button></div>
-        <div class="frame-wrap" id="frameWrap"><div class="welcome-frame" id="welcomeFrame"><div class="welcome-symbol">N</div><h3>Pronto para navegar?</h3><p>Digite um endereço acima ou faça uma pesquisa na barra principal.</p><span>Alguns sites bloqueiam a exibição dentro de outros aplicativos.</span></div><iframe id="pageFrame" title="Página da web" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"></iframe></div>
-        <div class="frame-foot"><span id="pageStatus">Nova guia</span><span>Sites externos podem limitar a incorporação</span></div>
-      </div>
-      <div class="bottom-grid"><section class="mini-panel"><div class="section-head"><div><span class="eyebrow">RECENTES</span><h2>Histórico</h2></div><button id="clearHistory" class="text-button">Limpar</button></div><div id="history" class="history"><p class="empty">Suas páginas recentes aparecerão aqui.</p></div></section><section class="mini-panel info"><span class="eyebrow">SOBRE O NEXUS</span><h2>Leve. Simples. Seu.</h2><p>O NEXUS BROWSER é um navegador web em formato de aplicativo. Ele usa o motor do navegador do seu dispositivo; não é o aplicativo Google Chrome nem inclui o Chromium completo no servidor.</p></section></div>
+    </nav>
+
+    <div class="bookmark-bar" id="bookmarkBar">
+      <button class="bookmark-shortcut" data-action="home">⌂ Página inicial</button>
+      <span class="bookmark-separator"></span>
+      <div id="bookmarkShortcuts" class="bookmark-shortcuts"></div>
+      <button class="bookmark-manage" id="manageBookmarks" title="Gerenciar favoritos">⋯</button>
+    </div>
+
+    <main class="stage">
+      <section class="start-page page-view active" id="startPage" aria-label="Página inicial do NEXUS">
+        <div class="start-content">
+          <div class="start-brand">
+            <div class="brand-mark">N</div>
+            <div class="brand-name">NEXUS<span>BROWSER</span></div>
+          </div>
+          <div class="start-date" id="startDate"></div>
+          <h1>Explore o seu mundo.</h1>
+          <p class="start-subtitle">Uma nova janela para a internet.</p>
+          <form class="start-search" id="startSearchForm">
+            <span class="search-symbol">⌕</span>
+            <input id="startSearch" placeholder="O que você quer encontrar?" autocomplete="off" aria-label="Pesquisar na web">
+            <button type="submit" aria-label="Pesquisar">↗</button>
+          </form>
+          <div class="quick-heading"><span>SEUS ATALHOS</span><button id="addShortcut">＋ Adicionar</button></div>
+          <div class="quick-grid" id="quickGrid">
+            <button class="quick-card" data-url="https://www.youtube.com"><span class="quick-icon youtube">▶</span><span>YouTube</span></button>
+            <button class="quick-card" data-url="https://www.wikipedia.org"><span class="quick-icon wiki">W</span><span>Wikipedia</span></button>
+            <button class="quick-card" data-url="https://github.com"><span class="quick-icon github">⌘</span><span>GitHub</span></button>
+            <button class="quick-card" data-url="https://www.google.com"><span class="quick-icon google">G</span><span>Google</span></button>
+          </div>
+          <div class="start-footer">
+            <span>PRIVACIDADE E CONTROLE</span>
+            <button id="startPrivate">Abrir janela anônima <span>↗</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="search-page page-view" id="searchPage" aria-label="Resultados da pesquisa">
+        <div class="results-wrap">
+          <div class="results-brand"><span class="mini-mark">N</span><b>NEXUS</b><span>SEARCH</span></div>
+          <form class="results-search" id="resultsSearchForm">
+            <input id="resultsQuery" aria-label="Editar pesquisa">
+            <button type="submit">Pesquisar</button>
+          </form>
+          <div class="results-meta" id="resultsMeta">Resultados da pesquisa</div>
+          <div id="searchResults" class="search-results">
+            <div class="loading-state"><span class="spinner"></span> Pesquisando na web...</div>
+          </div>
+          <p class="search-disclaimer">Resultados fornecidos pelo DuckDuckGo. Ao abrir um resultado, o site pode aplicar suas próprias regras de segurança.</p>
+        </div>
+      </section>
+
+      <section class="web-page page-view" id="webPage" aria-label="Página do site">
+        <div class="web-loading" id="webLoading"><span class="spinner"></span><span>Carregando página...</span></div>
+        <div class="blocked-notice hidden" id="blockedNotice">
+          <div class="blocked-icon">↗</div>
+          <h2>Este site não permite exibição incorporada</h2>
+          <p>Alguns sites bloqueiam a abertura dentro de outros aplicativos por políticas de segurança. Isso é uma restrição do próprio site.</p>
+          <button id="openBlockedExternal">Abrir em uma nova guia do dispositivo</button>
+          <button class="secondary-button" id="backToStart">Voltar à página inicial</button>
+        </div>
+        <iframe id="pageFrame" title="Conteúdo da página" referrerpolicy="strict-origin-when-cross-origin"
+          allow="fullscreen; autoplay; encrypted-media; picture-in-picture" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads"></iframe>
+      </section>
+
+      <section class="panel-page page-view" id="panelPage" aria-label="Painel do navegador">
+        <div class="panel-container">
+          <div class="panel-heading">
+            <button class="panel-back" id="panelBack">←</button>
+            <div><span class="eyebrow">CENTRAL NEXUS</span><h2 id="panelTitle">Histórico</h2></div>
+            <button class="panel-close" id="panelClose">×</button>
+          </div>
+          <div id="panelContent" class="panel-content"></div>
+        </div>
+      </section>
+
+      <section class="private-page page-view" id="privatePage" aria-label="Página inicial anônima">
+        <div class="private-content">
+          <div class="private-symbol">◉</div>
+          <span class="private-label">NAVEGAÇÃO PRIVADA</span>
+          <h1>Modo anônimo</h1>
+          <p>Esta aba não adiciona páginas ao histórico local nem salva favoritos nesta sessão.</p>
+          <div class="private-search-box">
+            <form id="privateSearchForm">
+              <span>⌕</span><input id="privateSearch" placeholder="Pesquisar em particular" autocomplete="off">
+              <button type="submit">↗</button>
+            </form>
+          </div>
+          <div class="private-info">
+            <h3>O que o modo anônimo faz</h3>
+            <ul>
+              <li>Não registra visitas no histórico local do NEXUS.</li>
+              <li>Não mantém favoritos criados nesta aba.</li>
+              <li>Fecha os dados temporários desta sessão ao fechar a aba.</li>
+            </ul>
+            <h3>O que ele não faz</h3>
+            <ul>
+              <li>Não oculta sua atividade dos sites, da rede ou do provedor.</li>
+              <li>Não substitui uma VPN nem garante anonimato na internet.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="status-bar">
+      <span id="statusText">Pronto</span>
+      <span class="status-right"><i></i> NEXUS BROWSER <span id="tabCounter">1 aba</span></span>
+    </footer>
+  </div>
+
+  <div class="menu-popover hidden" id="menuPopover">
+    <button data-panel="history">◷ <span>Histórico</span></button>
+    <button data-panel="bookmarks">☆ <span>Favoritos</span></button>
+    <button data-panel="downloads">↓ <span>Downloads</span></button>
+    <button data-panel="settings">⚙ <span>Configurações</span></button>
+    <button data-action="new-private">◉ <span>Nova aba anônima</span></button>
+    <button data-action="clear-data">⌫ <span>Limpar dados locais</span></button>
+    <div class="menu-divider"></div>
+    <div class="menu-shortcuts">Atalhos: Ctrl+T nova aba · Ctrl+W fechar</div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><h2 id="modalTitle">Adicionar atalho</h2><button id="modalClose" aria-label="Fechar">×</button></div>
+      <form id="modalForm">
+        <label for="modalName">Nome</label>
+        <input id="modalName" maxlength="40" required placeholder="Ex.: Meu site">
+        <label for="modalUrl">Endereço do site</label>
+        <input id="modalUrl" maxlength="2048" required placeholder="https://exemplo.com">
+        <p id="modalError" class="form-error"></p>
+        <div class="modal-actions"><button type="button" class="secondary-button" id="modalCancel">Cancelar</button><button type="submit" class="primary-button">Salvar atalho</button></div>
+      </form>
     </section>
-  </main>
-  <footer> NEXUS BROWSER <span>·</span> Feito para explorar a web.</footer>
-</div>
-<div id="toast" class="toast"></div>
-<script src="{{ url_for('static', filename='app.js') }}" defer></script>
-</body></html>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
