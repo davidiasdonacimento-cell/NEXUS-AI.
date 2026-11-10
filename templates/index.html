@@ -1,50 +1,54 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080b18">
-  <meta name="description" content="NEXUS AI — seu espaço de criação e produtividade.">
-  <title>NEXUS AI — Super App</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090d18"><meta name="description" content="NEXUS BROWSER — navegue e pesquise na web.">
+  <link rel="manifest" href="/static/manifest.webmanifest"><link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>NEXUS BROWSER</title>
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#"><span class="brand-mark">N</span><span>NEXUS<span class="brand-ai"> AI</span><small>YOUR CREATIVE SPACE</small></span></a>
-      <div class="side-label">WORKSPACE</div>
-      <button class="nav-item active" data-view="home"><span>⌂</span> Visão geral</button>
-      <button class="nav-item" data-view="assistant"><span>✳</span> Assistente IA</button>
-      <button class="nav-item" data-view="projects"><span>▦</span> Meus projetos</button>
-      <div class="side-label tools-label">FERRAMENTAS</div>
-      <button class="nav-item" data-view="writer"><span>✎</span> Estúdio de texto</button>
-      <button class="nav-item" data-view="media"><span>▶</span> Central de mídia</button>
-      <button class="nav-item" data-view="notes"><span>▤</span> Bloco de notas</button>
-      <div class="sidebar-bottom"><div class="profile-dot">N</div><div><b>Meu espaço</b><small>Salvo neste dispositivo</small></div><span class="online-dot"></span></div>
-    </aside>
-    <main class="main">
-      <header class="topbar"><button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button><div class="breadcrumb">NEXUS AI <span>/</span> <b id="crumb">Visão geral</b></div><div class="top-actions"><span class="status-pill"><i></i> Sistema online</span><div class="avatar">N</div></div></header>
-      <section class="view active" id="view-home">
-        <div class="welcome"><div><div class="eyebrow"><span></span> SEU UNIVERSO DIGITAL</div><h1>Crie sem <span>limites.</span></h1><p>Um espaço para organizar ideias, desenvolver projetos e transformar inspiração em criação.</p></div><div class="welcome-orb"><div class="orb-core">N</div></div></div>
-        <div class="section-heading"><div><h2>Seu workspace</h2><p>Escolha por onde começar.</p></div><span class="tiny-tag">NEXUS / 01</span></div>
-        <div class="tool-grid">
-          <button class="tool-card featured" data-view="assistant"><span class="tool-icon">✳</span><span class="card-arrow">↗</span><h3>Assistente IA</h3><p>Prepare ideias e conecte seu provedor de inteligência artificial.</p><small>CONVERSA INTELIGENTE</small></button>
-          <button class="tool-card" data-view="writer"><span class="tool-icon purple">✎</span><span class="card-arrow">↗</span><h3>Estúdio de texto</h3><p>Escreva, organize e refine seus textos em um só lugar.</p><small>ESCRITA & IDEIAS</small></button>
-          <button class="tool-card" data-view="media"><span class="tool-icon pink">▶</span><span class="card-arrow">↗</span><h3>Central de mídia</h3><p>Visualize arquivos de imagem e vídeo no navegador.</p><small>IMAGEM & VÍDEO</small></button>
-          <button class="tool-card" data-view="projects"><span class="tool-icon green">▦</span><span class="card-arrow">↗</span><h3>Meus projetos</h3><p>Guarde suas ideias e acompanhe o que está criando.</p><small>ORGANIZAÇÃO</small></button>
-        </div>
-        <div class="bottom-grid"><div class="panel"><div class="panel-head"><div><h3>Atividade recente</h3><p>Seus últimos projetos salvos</p></div><button class="text-btn" data-view="projects">Ver tudo ↗</button></div><div id="recentList" class="empty-state">Ainda não há projetos. Crie o primeiro no seu workspace.</div></div><div class="panel quick-panel"><div class="panel-head"><div><h3>Acesso rápido</h3><p>Continue de onde parou</p></div></div><button class="quick-link" data-view="notes"><span>▤</span> Abrir bloco de notas <b>→</b></button><button class="quick-link" data-view="writer"><span>✎</span> Criar um texto <b>→</b></button></div></div>
-      </section>
-      <section class="view" id="view-assistant"><div class="page-title"><div class="eyebrow">NEXUS INTELLIGENCE</div><h1>Assistente <span>IA</span></h1><p>Seu espaço para pensar, planejar e explorar ideias.</p></div><div class="chat-panel"><div class="chat-welcome"><div class="big-spark">✳</div><h2>O que vamos criar hoje?</h2><p>O módulo está preparado. Para respostas reais, conecte uma chave de API Gemini nas variáveis do Render.</p></div><div id="chatMessages"></div><form id="assistantForm" class="composer"><textarea id="promptInput" placeholder="Escreva sua ideia ou solicitação..." rows="2"></textarea><button type="submit">Enviar ↗</button></form><div class="privacy-note">Suas conversas não são enviadas a um provedor enquanto a API não estiver configurada.</div></div></section>
-      <section class="view" id="view-projects"><div class="page-title"><div class="eyebrow">SEU WORKSPACE</div><h1>Meus <span>projetos</span></h1><p>Organize suas criações em um só lugar.</p></div><div class="create-row"><input id="projectName" placeholder="Nome do novo projeto"><button id="createProject">＋ Criar projeto</button></div><div id="projectGrid" class="project-grid"></div></section>
-      <section class="view" id="view-writer"><div class="page-title"><div class="eyebrow">CREATIVE STUDIO</div><h1>Estúdio de <span>texto</span></h1><p>Um espaço simples para escrever e guardar suas ideias.</p></div><div class="editor-panel"><input id="docTitle" class="title-input" placeholder="Título do documento"><textarea id="docBody" class="document-area" placeholder="Comece a escrever aqui..."></textarea><div class="editor-footer"><span id="wordCount">0 palavras</span><button id="saveDoc">Salvar no projeto</button></div></div></section>
-      <section class="view" id="view-media"><div class="page-title"><div class="eyebrow">MEDIA SPACE</div><h1>Central de <span>mídia</span></h1><p>Selecione arquivos do seu dispositivo para visualizar no navegador.</p></div><label class="upload-zone" for="mediaInput"><span class="upload-icon">↑</span><b>Toque para selecionar arquivos</b><small>Imagens e vídeos · Os arquivos permanecem no seu dispositivo</small><input id="mediaInput" type="file" accept="image/*,video/*" multiple></label><div id="mediaPreview" class="media-grid"></div></section>
-      <section class="view" id="view-notes"><div class="page-title"><div class="eyebrow">QUICK NOTES</div><h1>Bloco de <span>notas</span></h1><p>Anote rapidamente. O conteúdo é salvo neste dispositivo.</p></div><div class="editor-panel"><textarea id="notesArea" class="document-area notes-area" placeholder="Suas anotações..."></textarea><div class="editor-footer"><span id="notesStatus">Salvamento automático</span><button id="clearNotes" class="secondary-btn">Limpar notas</button></div></div></section>
-      <footer> <span class="footer-brand">NEXUS AI</span> <span>Seu espaço. Suas ideias. Seu próximo passo.</span> <span>v0.1.0</span></footer>
-    </main>
-  </div>
-  <div id="toast" class="toast" role="status"></div>
-  <script src="{{ url_for('static', filename='app.js') }}"></script>
-</body>
-</html>
+<div class="app">
+  <header class="top">
+    <a class="brand" href="/" aria-label="NEXUS BROWSER"><span class="logo">N</span><span>NEXUS <b>BROWSER</b><small>EXPLORE WITHOUT LIMITS</small></span></a>
+    <div class="top-actions"><button id="installBtn" class="install hidden">＋ Instalar</button><span class="secure"><i></i> Navegação protegida pelo navegador</span></div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="orb"><span>N</span></div>
+      <div class="eyebrow">SEU ESPAÇO NA INTERNET</div>
+      <h1>O mundo está a<br><span>um clique.</span></h1>
+      <p>Pesquise na web, abra seus sites favoritos e organize sua navegação.</p>
+      <form id="searchForm" class="searchbox">
+        <span class="search-icon">⌕</span>
+        <input id="address" autocomplete="off" placeholder="Pesquise ou digite um endereço..." aria-label="Pesquisar ou digitar endereço" required>
+        <select id="engine" aria-label="Mecanismo de pesquisa">
+          <option value="google">Google</option><option value="bing">Bing</option><option value="duckduckgo">DuckDuckGo</option><option value="brave">Brave</option>
+        </select>
+        <button type="submit">Pesquisar <span>↗</span></button>
+      </form>
+      <div class="engine-note">BUSCA COM <b id="engineLabel">GOOGLE</b> · VOCÊ PODE TROCAR O MECANISMO</div>
+    </section>
+    <section class="workspace">
+      <div class="section-head"><div><span class="eyebrow">ACESSO RÁPIDO</span><h2>Seus destinos</h2></div><button id="addFavorite" class="outline">＋ Adicionar favorito</button></div>
+      <div id="favorites" class="favorites">
+        <button class="site" data-url="https://www.youtube.com"><span class="site-icon red">▶</span><b>YouTube</b><small>Vídeos</small></button>
+        <button class="site" data-url="https://www.wikipedia.org"><span class="site-icon blue">W</span><b>Wikipedia</b><small>Conhecimento</small></button>
+        <button class="site" data-url="https://www.github.com"><span class="site-icon dark">⌘</span><b>GitHub</b><small>Projetos</small></button>
+        <button class="site" data-url="https://www.google.com"><span class="site-icon multicolor">G</span><b>Google</b><small>Pesquisa</small></button>
+      </div>
+      <div class="browser-panel">
+        <div class="panel-head"><div><span class="eyebrow">NAVEGADOR</span><h2>Área de navegação</h2></div><div class="nav-controls"><button id="back" title="Voltar">←</button><button id="forward" title="Avançar">→</button><button id="reload" title="Recarregar">↻</button><button id="openExternal" class="external">Abrir fora ↗</button></div></div>
+        <div class="tabs" id="tabs"><button class="tab active" data-tab="0">◉ Nova guia <span>×</span></button><button id="newTab" class="new-tab" title="Nova guia">＋</button></div>
+        <div class="viewbar"><span class="lock">⌑</span><input id="pageAddress" placeholder="Digite um endereço para abrir nesta área"><button id="goPage">Ir ↗</button></div>
+        <div class="frame-wrap" id="frameWrap"><div class="welcome-frame" id="welcomeFrame"><div class="welcome-symbol">N</div><h3>Pronto para navegar?</h3><p>Digite um endereço acima ou faça uma pesquisa na barra principal.</p><span>Alguns sites bloqueiam a exibição dentro de outros aplicativos.</span></div><iframe id="pageFrame" title="Página da web" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"></iframe></div>
+        <div class="frame-foot"><span id="pageStatus">Nova guia</span><span>Sites externos podem limitar a incorporação</span></div>
+      </div>
+      <div class="bottom-grid"><section class="mini-panel"><div class="section-head"><div><span class="eyebrow">RECENTES</span><h2>Histórico</h2></div><button id="clearHistory" class="text-button">Limpar</button></div><div id="history" class="history"><p class="empty">Suas páginas recentes aparecerão aqui.</p></div></section><section class="mini-panel info"><span class="eyebrow">SOBRE O NEXUS</span><h2>Leve. Simples. Seu.</h2><p>O NEXUS BROWSER é um navegador web em formato de aplicativo. Ele usa o motor do navegador do seu dispositivo; não é o aplicativo Google Chrome nem inclui o Chromium completo no servidor.</p></section></div>
+    </section>
+  </main>
+  <footer> NEXUS BROWSER <span>·</span> Feito para explorar a web.</footer>
+</div>
+<div id="toast" class="toast"></div>
+<script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body></html>
