@@ -7,6 +7,7 @@ from html.parser import HTMLParser
 from urllib.parse import quote_plus, urlparse, parse_qs, unquote
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
+from search_service import search as run_search, clean_query
 from flask import Flask, jsonify, render_template, request, abort, make_response
 
 app = Flask(__name__)
@@ -158,20 +159,18 @@ def config():
 
 @app.get("/api/search")
 def api_search():
-    query = normalize_query(request.args.get("q", ""))
+    query = clean_query(request.args.get("q", ""))
     if not query:
-        return jsonify(error="Digite algo para pesquisar.", results=[]), 400
-    try:
-        results = search_web(query)
-        return jsonify(query=query, provider="DuckDuckGo", results=results)
-    except (HTTPError, URLError, TimeoutError, OSError) as exc:
-        log.warning("Search provider unavailable: %s", exc)
         return jsonify(
-            query=query,
-            provider="DuckDuckGo",
+            query="",
+            provider=None,
             results=[],
-            error="A pesquisa integrada está temporariamente indisponível.",
-        ), 502
+            error="Digite algo para pesquisar.",
+            attempts=[],
+        ), 400
+    result = run_search(query)
+    status_code = 200 if result.get("results") else 503
+    return jsonify(result), status_code
 
 
 @app.get("/api/resolve")
