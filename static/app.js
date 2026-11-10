@@ -89,15 +89,46 @@ if(request!==state.request||active()?.id!==t.id)return;
 renderResults(data,response.ok)}catch(error){if(request!==state.request)return;
 $("resultsMeta").textContent="Pesquisa indisponível";
 $("searchResults").textContent="Verifique sua conexão e tente novamente."}}
-function renderResults(data,ok){const root=$("searchResults");
+function renderResults(data,ok){
+const root=$("searchResults");
 root.replaceChildren();
 const items=Array.isArray(data.results)?data.results:[];
-$("resultsMeta").textContent=items.length?items.length+" resultados · DuckDuckGo":"Nenhum resultado disponível";
-if(!items.length){const p=document.createElement("p");
+const provider=data.provider||"Pesquisa integrada";
+$("resultsMeta").textContent=items.length?items.length+" resultados · "+provider:"Pesquisa sem resultados";
+if(!items.length){
+const p=document.createElement("p");
 p.className="empty-state";
-p.textContent=data.error||"Tente outra pesquisa.";
+p.textContent=data.error||"Os buscadores não retornaram resultados. Tente novamente.";
 root.append(p);
-return}items.forEach(item=>{if(!http(item.url))return;
+const attempts=Array.isArray(data.attempts)?data.attempts:[];
+if(attempts.length){
+const diagnostics=document.createElement("details");
+diagnostics.className="search-diagnostics";
+const summary=document.createElement("summary");
+summary.textContent="Detalhes da tentativa";
+diagnostics.append(summary);
+attempts.forEach(item=>{
+const line=document.createElement("div");
+line.className="search-diagnostic-row";
+const name=document.createElement("span");
+name.textContent=item.provider||"Buscador";
+const statusLabel=document.createElement("span");
+statusLabel.textContent=item.status==="error"?"Falha de conexão":item.status==="empty"?"Sem links":"Concluído";
+line.append(name,statusLabel);
+diagnostics.append(line);
+});
+root.append(diagnostics);
+}
+const retry=document.createElement("button");
+retry.type="button";
+retry.className="search-retry";
+retry.textContent="Tentar novamente";
+retry.addEventListener("click",()=>search($("resultsQuery").value));
+root.append(retry);
+return;
+}
+items.forEach(item=>{
+if(!http(item.url))return;
 const article=document.createElement("article");
 article.className="result-item";
 const url=document.createElement("div");
@@ -107,13 +138,15 @@ const link=document.createElement("a");
 link.className="result-title";
 link.href="#";
 link.textContent=item.title||item.url;
-link.addEventListener("click",e=>{e.preventDefault();
-navigate(item.url)});
+link.addEventListener("click",e=>{e.preventDefault();navigate(item.url)});
 const snippet=document.createElement("p");
 snippet.className="result-snippet";
 snippet.textContent=item.snippet||"Abrir página";
 article.append(url,link,snippet);
-root.append(article)})}
+root.append(article);
+});
+}
+
 function renderCurrent(){const t=active();
 if(!t)return;
 clearTimeout(renderCurrent.timer);
