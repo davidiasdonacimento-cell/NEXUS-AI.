@@ -1039,3 +1039,58 @@ body {
     bottom: 46px;
   }
 }
+
+
+/* Connection health indicator */
+.network-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+.network-status:hover {
+  border-color: var(--border);
+  background: var(--surface-hover);
+}
+.network-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #d6a34b;
+}
+.network-status[data-state="online"] .network-dot {
+  background: #35c77a;
+  box-shadow: 0 0 0 3px rgba(53, 199, 122, .12);
+}
+.network-status[data-state="offline"] .network-dot {
+  background: #e45d6b;
+  box-shadow: 0 0 0 3px rgba(228, 93, 107, .12);
+}
+.network-label {
+  white-space: nowrap;
+}
+.network-detail {
+  display: none;
+}
+@media (min-width: 720px) {
+  .network-detail {
+    display: inline;
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 420px) {
+  .network-label {
+    font-size: 9px;
+  }
+}
