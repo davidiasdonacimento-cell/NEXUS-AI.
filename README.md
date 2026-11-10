@@ -1,29 +1,20 @@
-# NEXUS AI
+# NEXUS BROWSER
 
-Workspace web responsivo em português, construído com Flask, HTML, CSS e JavaScript.
+Navegador web em formato de aplicação web progressiva (PWA), com pesquisa e atalhos para sites.
 
-## Recursos incluídos
-- Painel responsivo para celular e computador.
-- Navegação entre Assistente IA, projetos, estúdio de texto, central de mídia e notas.
-- Projetos, documentos e notas salvos no armazenamento local do navegador.
-- Pré-visualização local de imagens e vídeos.
-- Endpoint de saúde em `/health`.
-- Deploy preparado para Render com Gunicorn.
+## Recursos
+- Pesquisa por Google, Bing, DuckDuckGo e Brave Search.
+- Barra de endereço, área de navegação incorporada, histórico local e favoritos.
+- Interface adaptável para celular e computador.
+- Instalação como PWA quando o navegador/dispositivo oferece suporte.
 
-## Desenvolvimento local
-```bash
-pip install -r requirements.txt
-python app.py
-```
+## Limitações importantes
+Este projeto é uma aplicação web, não o aplicativo Google Chrome e não contém uma compilação completa do Chromium no servidor. Ele usa o motor do navegador do dispositivo. Muitos sites bloqueiam carregamento em iframe por políticas de segurança (CSP / X-Frame-Options); nesses casos, use "Abrir fora" ou abra o resultado em uma nova aba. O histórico e os favoritos ficam no armazenamento local do navegador e não sincronizam entre dispositivos.
 
-## Render
+## Deploy no Render
 - Runtime: Python
 - Build: `pip install -r requirements.txt`
 - Start: `gunicorn app:app --bind 0.0.0.0:$PORT`
 - Health check: `/health`
 
-## Integração de IA
-O endpoint `POST /api/assistant` está preparado. Para habilitar respostas reais, configure uma variável de ambiente `GEMINI_API_KEY` no Render e implemente/ative o provedor escolhido. Nenhuma chave deve ser colocada no código ou commitada no GitHub.
-
-## Persistência
-A versão inicial salva projetos, documentos e notas no navegador do dispositivo. Isso não sincroniza automaticamente entre dispositivos e pode ser apagado ao limpar os dados do navegador.
+O serviço existente do Render permanece conectado ao repositório e fará deploy automático após o commit.
