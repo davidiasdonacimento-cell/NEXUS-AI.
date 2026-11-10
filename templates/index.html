@@ -163,6 +163,8 @@
     <button data-panel="settings">⚙ <span>Configurações</span></button>
     <button data-action="new-private">◉ <span>Nova aba anônima</span></button>
     <button data-action="clear-data">⌫ <span>Limpar dados locais</span></button>
+    <button data-action="backup">▣ <span>Backup e restauração</span></button>
+    <button data-action="commands">⌘ <span>Comandos rápidos</span></button>
     <div class="menu-divider"></div>
     <div class="menu-shortcuts">Atalhos: Ctrl+T nova aba · Ctrl+W fechar</div>
   </div>
@@ -183,5 +185,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='session-tools.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='command-palette.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='accessibility.js') }}" defer></script>
 </body>
 </html>
